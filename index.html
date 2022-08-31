@@ -36,8 +36,13 @@
             template: `
                 <form v-on:submit.prevent="handleSubmit">
                     <h1>{{title}}</h1>
-                    <custom-input type='email' v-bind:label='emailLabel' v-model='email'/>
-                    <custom-input type='password' v-bind:label=' passwordLabel' v-model='password'/>
+                    <custom-input 
+                        v-for='(input, index) in inputs'
+                        v-bind:key= 'index'
+                        v-bind:type= input.type
+                        v-bind:label= input.label
+                        v-model=input.value
+                    />
                     <button>Login</button>
                 </form>
             `,
@@ -47,6 +52,18 @@
             data() {
                 return {
                     title: 'Login Form',
+                    inputs: [
+                        {
+                            label: 'Email',
+                            value: '',
+                            type: 'email'
+                        },
+                        {
+                            label: 'Password',
+                            value: '',
+                            type: 'password'
+                        },
+                    ],
                     email: '',
                     password: '',
                     emailLabel: 'Email',
@@ -57,8 +74,8 @@
             methods: {
                 handleSubmit(){
                     alert('title');
-                    alert(this.email);
-                    alert(this.password);
+                    alert(this.inputs[0].value);
+                    alert(this.inputs[1].value);
                 }
             },
         });
@@ -68,11 +85,11 @@
             template: `
                 <label>
                     {{label}}
-                    <input v-model='inputValue'/>
+                    <input :type="type" v-model='inputValue'/>
                 </label>
             `,
 
-            props: ['label', 'modelValue'],
+            props: ['label', 'type','modelValue'],
 
             computed: {
                 inputValue: {
