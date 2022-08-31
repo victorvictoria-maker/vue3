@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue E-commerce</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app" v-cloak>
+       <!-- {{greeting}}
+
+       <input type="text" v-model="greeting">
+
+       <div style="border: 1px solid red; width: 300px; height: 300px" v-if="isVisible"></div> -->
+
+       <login-form/>
+    </div>
+
+
+
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        const app = Vue.createApp({
+            data: function() {
+                return {
+                    greeting: 'Hi, user',
+                    isVisible: true
+                }
+            }
+        });
+
+        // Login component
+        app.component('login-form', {
+            template: `
+                <form v-on:submit.prevent="handleSubmit">
+                    <h1>{{title}}</h1>
+                    <custom-input type='email' v-bind:label='emailLabel' v-model='email'/>
+                    <custom-input type='password' v-bind:label=' passwordLabel' v-model='password'/>
+                    <button>Login</button>
+                </form>
+            `,
+
+            components: ['custom-input'],
+
+            data() {
+                return {
+                    title: 'Login Form',
+                    email: '',
+                    password: '',
+                    emailLabel: 'Email',
+                    passwordLabel: 'Password',
+                }
+            },
+
+            methods: {
+                handleSubmit(){
+                    alert('title');
+                    alert(this.email);
+                    alert(this.password);
+                }
+            },
+        });
+
+        // Input component
+        app.component('custom-input', {
+            template: `
+                <label>
+                    {{label}}
+                    <input v-model='inputValue'/>
+                </label>
+            `,
+
+            props: ['label', 'modelValue'],
+
+            computed: {
+                inputValue: {
+                    get() {
+                        return this.modelValue;
+                    },
+                    set(value) {
+                        this.$emit('update:modelValue', value);
+                    }
+                }
+            },
+
+            // data() {
+            //     return {
+            //      inputValue: ''
+            //     }
+            // },
+
+           
+        });
+        app.mount('#app');
+    </script>
+</body>
+</html>
